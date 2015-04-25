@@ -6,7 +6,7 @@
     "princejwesley <princejohnwesley@gmail.com>"
   ],
   "main" : [
-    "extractjs.min.js",
+    "extractjs.min.js"
   ],
   "license": "MIT",
   "description" : "Extract string from input and bind it to variable",
