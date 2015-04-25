@@ -1,0 +1,17 @@
+{
+  "name": "extractjs",
+  "version": "0.1.0",
+  "homepage": "https://github.com/princejwesley/extractjs",
+  "authors": [
+    "princejwesley <princejohnwesley@gmail.com>"
+  ],
+  "main" : [
+    "extractjs.min.js",
+  ],
+  "license": "MIT",
+  "description" : "Extract string from input and bind it to variable",
+  "keywords": [
+    "extract",
+    "template"
+  ]
+}
