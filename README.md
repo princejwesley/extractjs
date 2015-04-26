@@ -1,4 +1,4 @@
-# extractjs
+# extractjs [![Build Status](https://travis-ci.org/princejwesley/extractjs.svg)](https://travis-ci.org/princejwesley/extractjs)
 Extract string from input and bind it to variable
 
 ##Usage
