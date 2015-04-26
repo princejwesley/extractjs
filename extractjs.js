@@ -32,6 +32,15 @@ Copyright (c) 2015 Prince John Wesley (princejohnwesley@gmail.com)
     dest.initValue = src.initValue;
   }
 
+  function clone(o) {
+    var output = {}, attr;
+    for(attr in o) {
+      //string & numbers are immutatble
+      output[attr] = o[attr];
+    }
+    return output;
+  }
+
   function extract(template, input, settings) {
     if (typeof template !== 'string') throw 'Expected string template, Found ' + (typeof template);
     var result = {};
@@ -54,9 +63,33 @@ Copyright (c) 2015 Prince John Wesley (princejohnwesley@gmail.com)
       return '(.*?)';
     });
 
-    if (!input || typeof input !== 'string') return matcher;
+    if (!input || typeof input !== 'string') {
+      return {
+        'extract': matcher,
+        'bind': interpolate,
+        'interpolate': interpolate
+      };
+    }
+
+    function interpolate(o) {
+      var token, output = template, pattern;
+      var endExtract = escapseRegExp(properties.endExtract);
+      var startExtract = escapseRegExp(properties.startExtract)
+      for(token in o) {
+        if(result.hasOwnProperty(token)) {
+          pattern = new RegExp(startExtract + escapseRegExp(token) + endExtract);
+          output = output.replace(pattern, o[token]);
+        }
+      }
+      for(token in result) {
+        pattern = new RegExp(startExtract + escapseRegExp(token) + endExtract);
+        output = output.replace(pattern, properties.initValue);
+      }
+      return output;
+    }
 
     function matcher(input) {
+      var ouput = clone(result);
       if (!input || typeof input !== 'string') return result;
       match = input.match(pattern);
       if (match) {

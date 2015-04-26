@@ -12,9 +12,9 @@ Install from npm
 ```javascript
 
 var extractjs = require('extractjs'),
-    extract = extractjs();
+    extractor = extractjs();
 
-var captured = extract("This is a {name} library", "This is a extractjs library");
+var captured = extractor("This is a {name} library", "This is a extractjs library");
 // > { name: 'extractjs'}
 
 ```
@@ -33,22 +33,28 @@ Templates can be redefined as below:
 ```javascript
 var extractjs = require('extractjs'),
     settings = { startExtract: '[[', endExtract: ']]'}
-    extract = extractjs(settings);
+    extractor = extractjs(settings);
 
-var captured = extract("This is [[name]], [[age]] years old", "This is John, 26 years old");
+var captured = extractor("This is [[name]], [[age]] years old", "This is John, 26 years old");
 // > { name: 'John', age: 26 } <-- age is no longer string
 
 // Settings can be overridden at the time of extraction
-var date = extract("Date is |date|/|month|/|year|", "Date is 26/04/2015", { startExtract: '|', endExtract: '|'})
+var date = extractor("Date is |date|/|month|/|year|", "Date is 26/04/2015", { startExtract: '|', endExtract: '|'})
 // > { date: 26, month: 4, year: 2015 }
 ```
 
-Its possible to build a pattern before extract data.
+Its possible to build a pattern before extract/interpolate data.
 ```javascript
-var loginPattern = extract("You are logged in as {name}.");
+var extractjs = require('extractjs'),
+    extractor = extractjs();
 
-var name = loginPattern('You are logged in as John. Last login: Yesterday').name;
+var loginPattern = extractor("You are logged in as {name}.");
+
+var name = loginPattern.extract('You are logged in as John. Last login: Yesterday').name;
 // > John
+
+var output = loginPattern.interpolate({name: 'John'}); // Alias 'bind' -> interpolate
+//> You are loggin in as John.
 ```
 
 ###Web page
