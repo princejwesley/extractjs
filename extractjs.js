@@ -33,90 +33,99 @@ Copyright (c) 2015 Prince John Wesley (princejohnwesley@gmail.com)
   }
 
   function clone(o) {
-    var output = {}, attr;
-    for(attr in o) {
+    var output = {},
+      attr;
+    for (attr in o) {
       //string & numbers are immutatble
       output[attr] = o[attr];
     }
     return output;
   }
 
-  function extract(template, input, settings) {
-    if (typeof template !== 'string') throw 'Expected string template, Found ' + (typeof template);
-    var result = {};
-    var properties = {};
-    var keys = [],
-      match, idx, val, pattern = '', loc = 0;
+  function extract(context) {
 
-    overrideProperties(properties, settings || defaults);
+    return function(template, input, settings) {
 
-    var extractorPattern = new RegExp(escapseRegExp(properties.startExtract) + '(.*?)' +
-      escapseRegExp(properties.endExtract), 'g');
+      if (typeof template !== 'string') throw 'Expected string template, Found ' + (typeof template);
+      var result = {};
+      var properties = {};
+      var keys = [],
+        match, idx, val, pattern = '',
+        loc = 0;
 
-    template.replace(extractorPattern, function(match, token, offset, str) {
-      token = token.trim();
-      if (token !== '') {
-        result[token] = properties.initValue;
-        keys.push(token);
-      }
-      pattern += escapseRegExp(str.substring(loc, offset))
-      loc = offset + match.length
+      overrideProperties(properties, settings || context);
 
-      if (token === '') return '';
-      pattern += '(.*?)';
-      if (offset + match.length !== str.length) return '';
-      pattern += '$';
-      return '';
-    });
+      var extractorPattern = new RegExp(escapseRegExp(properties.startExtract) + '(.*?)' +
+        escapseRegExp(properties.endExtract), 'g');
 
-    if(loc < template.length) {
-      pattern += escapseRegExp(template.substring(loc));
-    }
-
-    if (!input || typeof input !== 'string') {
-      return {
-        'extract': matcher,
-        'bind': interpolate,
-        'interpolate': interpolate
-      };
-    }
-
-    function interpolate(o) {
-      var token, output = template, pattern;
-      var endExtract = escapseRegExp(properties.endExtract);
-      var startExtract = escapseRegExp(properties.startExtract)
-      for(token in o) {
-        if(result.hasOwnProperty(token)) {
-          pattern = new RegExp(startExtract + '\\s*' +escapseRegExp(token) + '\\s*' + endExtract);
-          output = output.replace(pattern, o[token]);
+      template.replace(extractorPattern, function(match, token, offset, str) {
+        token = token.trim();
+        if (token !== '') {
+          result[token] = properties.initValue;
+          keys.push(token);
         }
-      }
-      for(token in result) {
-        pattern = new RegExp(startExtract + escapseRegExp(token) + endExtract);
-        output = output.replace(pattern, properties.initValue);
-      }
-      return output;
-    }
+        pattern += escapseRegExp(str.substring(loc, offset));
+        loc = offset + match.length;
 
-    function matcher(input) {
-      var ouput = clone(result);
-      if (!input || typeof input !== 'string') return result;
-      match = input.match(pattern);
-      if (match) {
-        match.shift();
-        for (idx in keys) {
-          val = match[idx]
-          result[keys[idx]] = +val ? +val : val;
+        if (token === '') return '';
+        pattern += '(.*?)';
+        if (offset + match.length !== str.length) return '';
+        pattern += '$';
+        return '';
+      });
+
+      if (loc < template.length) {
+        pattern += escapseRegExp(template.substring(loc));
+      }
+
+      if (!input || typeof input !== 'string') {
+        return {
+          'extract': matcher,
+          'bind': interpolate,
+          'interpolate': interpolate
+        };
+      }
+
+      function interpolate(o) {
+        var token, output = template,
+          pattern;
+        var endExtract = escapseRegExp(properties.endExtract);
+        var startExtract = escapseRegExp(properties.startExtract);
+        for (token in o) {
+          if (result.hasOwnProperty(token)) {
+            pattern = new RegExp(startExtract + '\\s*' + escapseRegExp(token) + '\\s*' +
+              endExtract);
+            output = output.replace(pattern, o[token]);
+          }
         }
+        for (token in result) {
+          pattern = new RegExp(startExtract + escapseRegExp(token) + endExtract);
+          output = output.replace(pattern, properties.initValue);
+        }
+        return output;
       }
-      return result;
-    }
 
-    return matcher(input);
+      function matcher(input) {
+        var ouput = clone(result);
+        if (!input || typeof input !== 'string') return result;
+        match = input.match(pattern);
+        if (match) {
+          match.shift();
+          for (idx in keys) {
+            val = match[idx];
+            result[keys[idx]] = +val ? +val : val;
+          }
+        }
+        return result;
+      }
+
+      return matcher(input);
+    };
   }
-
   return function(settings) {
-    if (settings) overrideProperties(defaults, settings);
-    return extract;
+    var context = {};
+    if (settings) overrideProperties(context, settings);
+    else context = defaults;
+    return extract(context);
   };
 }));

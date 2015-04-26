@@ -59,6 +59,3 @@ var output = loginPattern.interpolate({name: 'John'}); // Alias 'bind' -> interp
 
 ###Web page
 Access from window/global as extractjs.
-
-
-#TODO unit tests
