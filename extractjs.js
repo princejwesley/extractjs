@@ -46,22 +46,32 @@ Copyright (c) 2015 Prince John Wesley (princejohnwesley@gmail.com)
     var result = {};
     var properties = {};
     var keys = [],
-      match, idx, val;
+      match, idx, val, pattern = '', loc = 0;
 
     overrideProperties(properties, settings || defaults);
 
     var extractorPattern = new RegExp(escapseRegExp(properties.startExtract) + '(.*?)' +
       escapseRegExp(properties.endExtract), 'g');
 
-    var pattern = template.replace(extractorPattern, function(match, token, offset, str) {
+    template.replace(extractorPattern, function(match, token, offset, str) {
+      token = token.trim();
       if (token !== '') {
         result[token] = properties.initValue;
         keys.push(token);
       }
+      pattern += escapseRegExp(str.substring(loc, offset))
+      loc = offset + match.length
+
       if (token === '') return '';
-      if (offset + match.length === str.length) return '(.*?)$';
-      return '(.*?)';
+      pattern += '(.*?)';
+      if (offset + match.length !== str.length) return '';
+      pattern += '$';
+      return '';
     });
+
+    if(loc < template.length) {
+      pattern += escapseRegExp(template.substring(loc));
+    }
 
     if (!input || typeof input !== 'string') {
       return {
@@ -77,7 +87,7 @@ Copyright (c) 2015 Prince John Wesley (princejohnwesley@gmail.com)
       var startExtract = escapseRegExp(properties.startExtract)
       for(token in o) {
         if(result.hasOwnProperty(token)) {
-          pattern = new RegExp(startExtract + escapseRegExp(token) + endExtract);
+          pattern = new RegExp(startExtract + '\\s*' +escapseRegExp(token) + '\\s*' + endExtract);
           output = output.replace(pattern, o[token]);
         }
       }

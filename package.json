@@ -1,6 +1,6 @@
 {
   "name": "extractjs",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": "prince john wesley <princejohnwesley@gmail.com>",
   "description": "Extract string from input and bind it to variable"
 }
