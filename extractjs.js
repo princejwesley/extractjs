@@ -78,7 +78,7 @@ Copyright (c) 2015 Prince John Wesley (princejohnwesley@gmail.com)
         pattern += escapseRegExp(template.substring(loc));
       }
 
-      if (!input || typeof input !== 'string') {
+      if (typeof input !== 'string') {
         return {
           'extract': matcher,
           'bind': interpolate,
@@ -107,7 +107,7 @@ Copyright (c) 2015 Prince John Wesley (princejohnwesley@gmail.com)
 
       function matcher(input) {
         var ouput = clone(result);
-        if (!input || typeof input !== 'string') return result;
+        if (typeof input !== 'string') return result;
         match = input.match(pattern);
         if (match) {
           match.shift();
