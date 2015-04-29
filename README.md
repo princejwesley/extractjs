@@ -1,4 +1,7 @@
-# extractjs [![Build Status](https://travis-ci.org/princejwesley/extractjs.svg)](https://travis-ci.org/princejwesley/extractjs)
+# extractjs
+
+[![Build Status](https://travis-ci.org/princejwesley/extractjs.svg)](https://travis-ci.org/princejwesley/extractjs) [![npm version](https://badge.fury.io/js/extractjs.svg)](http://badge.fury.io/js/extractjs) [![Bower version](https://badge.fury.io/bo/extractjs.svg)](http://badge.fury.io/bo/extractjs) ![license](https://img.shields.io/badge/license-MIT-blue.svg)
+
 Extract/interpolate strings.
 
 ##Usage
@@ -67,7 +70,7 @@ var extractjs = require('extractjs'),
                 return 'Mr/Mrs ' + value;
             }
         }
-    };
+    },
     extractor = extractjs(settings);
 
 var captured = extractor("This is [[name]], [[age]] years old", "This is John, 26 years old");
