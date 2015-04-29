@@ -39,11 +39,13 @@ var extractjs = require('extractjs'),
     settings = { startExtract: '[[', endExtract: ']]'}
     extractor = extractjs(settings);
 
-var captured = extractor("This is [[name]], [[age]] years old", "This is John, 26 years old");
+var captured = extractor("This is [[name]], [[age]] years old", 
+    "This is John, 26 years old");
 // > { name: 'John', age: 26 } <-- age is no longer string
 
 // Settings can be overridden at the time of extraction
-var date = extractor("Date is |date|/|month|/|year|", "Date is 26/04/2015", { startExtract: '|', endExtract: '|'})
+var date = extractor("Date is |date|/|month|/|year|", "Date is 26/04/2015",
+    { startExtract: '|', endExtract: '|'})
 // > { date: 26, month: 4, year: 2015 }
 ```
 
@@ -54,10 +56,11 @@ var extractjs = require('extractjs'),
 
 var loginPattern = extractor("You are logged in as {name}.");
 
-var name = loginPattern.extract('You are logged in as John. Last login: Yesterday').name;
+var name = loginPattern.extract('You are logged in as John. Last login: Today')
+    .name;
 // > John
 
-var output = loginPattern.interpolate({name: 'John'}); // Alias 'bind' -> interpolate
+var output = loginPattern.interpolate({name: 'John'});
 //> You are loggin in as John.
 ```
 
@@ -73,7 +76,8 @@ var extractjs = require('extractjs'),
     },
     extractor = extractjs(settings);
 
-var captured = extractor("This is [[name]], [[age]] years old", "This is John, 26 years old");
+var captured = extractor("This is [[name]], [[age]] years old",
+    "This is John, 26 years old");
 // > { name: 'Mr/Mrs John', age: 26 }
 ```
 
