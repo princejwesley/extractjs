@@ -17,7 +17,8 @@ Install from npm
 var extractjs = require('extractjs'),
     extractor = extractjs();
 
-var captured = extractor("This is a {name} library", "This is a extractjs library");
+var captured = extractor("This is a {name} library",
+    "This is a extractjs library");
 // > { name: 'extractjs'}
 
 ```
@@ -76,7 +77,7 @@ var extractjs = require('extractjs'),
     },
     extractor = extractjs(settings);
 
-var captured = extractor("This is [[name]], [[age]] years old",
+var captured = extractor("This is {name}, {age} years old",
     "This is John, 26 years old");
 // > { name: 'Mr/Mrs John', age: 26 }
 ```
