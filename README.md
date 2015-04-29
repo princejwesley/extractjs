@@ -1,5 +1,5 @@
 # extractjs [![Build Status](https://travis-ci.org/princejwesley/extractjs.svg)](https://travis-ci.org/princejwesley/extractjs)
-Extract string from input and bind it to variable
+Extract/interpolate strings.
 
 ##Usage
 
@@ -25,6 +25,7 @@ var captured = extractor("This is a {name} library", "This is a extractjs librar
     var defaults = {
         startExtract: '{',
         endExtract: '}',
+        extractors: { /* capture functions */ }
         initValue: void 0
     }
 ```
@@ -55,6 +56,22 @@ var name = loginPattern.extract('You are logged in as John. Last login: Yesterda
 
 var output = loginPattern.interpolate({name: 'John'}); // Alias 'bind' -> interpolate
 //> You are loggin in as John.
+```
+
+extractors are used to override or manipulate captured values.
+```javascript
+var extractjs = require('extractjs'),
+    settings = {
+        extractors: {
+            name: function(value) {
+                return 'Mr/Mrs ' + value;
+            }
+        }
+    };
+    extractor = extractjs(settings);
+
+var captured = extractor("This is [[name]], [[age]] years old", "This is John, 26 years old");
+// > { name: 'Mr/Mrs John', age: 26 }
 ```
 
 ###Web page

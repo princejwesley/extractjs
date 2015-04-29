@@ -18,6 +18,7 @@ Copyright (c) 2015 Prince John Wesley (princejohnwesley@gmail.com)
     startExtract: '{',
     endExtract: '}',
     initValue: undefined,
+    extractors: {}
   };
 
   function escapseRegExp(str) {
@@ -30,6 +31,7 @@ Copyright (c) 2015 Prince John Wesley (princejohnwesley@gmail.com)
     dest.endExtract = src.endExtract && src.endExtract.length ? src.endExtract : defaults
       .endExtract;
     dest.initValue = src.initValue;
+    dest.extractors = src.extractors ? src.extractors : defaults.extractors;
   }
 
   function clone(o) {
@@ -41,6 +43,7 @@ Copyright (c) 2015 Prince John Wesley (princejohnwesley@gmail.com)
     }
     return output;
   }
+
 
   function extract(context) {
 
@@ -86,6 +89,17 @@ Copyright (c) 2015 Prince John Wesley (princejohnwesley@gmail.com)
         };
       }
 
+      function identity(input) {
+        return input;
+      }
+
+      function extractor(output, token, value) {
+        var fun = output.extractors[token] || identity;
+        if(typeof fun !== 'function')
+          return value;
+        return fun(value);
+      }
+
       function interpolate(o) {
         var token, output = template,
           pattern;
@@ -106,17 +120,17 @@ Copyright (c) 2015 Prince John Wesley (princejohnwesley@gmail.com)
       }
 
       function matcher(input) {
-        var ouput = clone(result);
-        if (typeof input !== 'string') return result;
+        var output = clone(result);
+        if (typeof input !== 'string') return output;
         match = input.match(pattern);
         if (match) {
           match.shift();
           for (idx in keys) {
-            val = match[idx];
-            result[keys[idx]] = +val ? +val : val;
+            val = extractor(properties, keys[idx], match[idx]);
+            output[keys[idx]] = +val && parseInt(val) ? +val : val;
           }
         }
-        return result;
+        return output;
       }
 
       return matcher(input);

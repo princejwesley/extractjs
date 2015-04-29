@@ -1,8 +1,8 @@
 {
   "name": "extractjs",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "author": "prince john wesley <princejohnwesley@gmail.com>",
-  "description": "Extract string from input and bind it to variable",
+  "description": "Extract/interpolate string",
   "license": "MIT",
   "main": "extractjs.js",
   "bugs": {
@@ -33,6 +33,7 @@
     "extract",
     "pattern matching",
     "bind",
-    "string parse"
+    "capture",
+    "template"
   ]
 }
