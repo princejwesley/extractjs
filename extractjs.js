@@ -53,7 +53,7 @@ Copyright (c) 2015 Prince John Wesley (princejohnwesley@gmail.com)
       var result = {};
       var properties = {};
       var keys = [],
-        match, idx, val, pattern = '',
+        match, idx, pattern = '',
         loc = 0;
 
       overrideProperties(properties, settings || context);
@@ -89,12 +89,12 @@ Copyright (c) 2015 Prince John Wesley (princejohnwesley@gmail.com)
         };
       }
 
-      function identity(input) {
-        return input;
+      function defaultExtractor(input) {
+        return +input && parseInt(input) ? +input : input;
       }
 
       function extractor(output, token, value) {
-        var fun = output.extractors[token] || identity;
+        var fun = output.extractors[token] || defaultExtractor;
         if(typeof fun !== 'function')
           return value;
         return fun(value);
@@ -126,8 +126,7 @@ Copyright (c) 2015 Prince John Wesley (princejohnwesley@gmail.com)
         if (match) {
           match.shift();
           for (idx in keys) {
-            val = extractor(properties, keys[idx], match[idx]);
-            output[keys[idx]] = +val && parseInt(val) ? +val : val;
+            output[keys[idx]] = extractor(properties, keys[idx], match[idx]);
           }
         }
         return output;

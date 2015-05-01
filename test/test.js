@@ -74,7 +74,8 @@ describe('extractjs', function() {
 
     it('should extract input using customized function', function() {
       var nameFn = function(value) {
-        return 'Mr/Mrs ' + value;
+        var names = value.split(' ');
+        return { firstName: names[0], lastName: value.substring(names[0].length).trim(), fullName: value };
       };
       var settings = {
         extractors: {
@@ -83,7 +84,11 @@ describe('extractjs', function() {
       };
       var captured = extractor('Hello {name}', "Hello Senthil Porunan", settings);
       expect(captured).to.eql({
-        name: 'Mr/Mrs Senthil Porunan'
+        name:  {
+          fullName: 'Senthil Porunan',
+          firstName: 'Senthil',
+          lastName: 'Porunan'
+        }
       });
     });
 

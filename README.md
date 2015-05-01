@@ -71,15 +71,24 @@ var extractjs = require('extractjs'),
     settings = {
         extractors: {
             name: function(value) {
-                return 'Mr/Mrs ' + value;
+                var names = value.split(' ');
+                return {
+                    firstName: names[0],
+                    lastName: value.substring(names[0].length).trim(),
+                    fullName: value
+                };
             }
         }
     },
     extractor = extractjs(settings);
 
 var captured = extractor("This is {name}, {age} years old",
-    "This is John, 26 years old");
-// > { name: 'Mr/Mrs John', age: 26 }
+    "This is John Wesley, 26 years old");
+// > { name: {
+//      firstName: 'John',
+//      lastName: 'Wesley',
+//      fullName: 'John Wesley'
+//     }, age: 26 }
 ```
 
 ###Web page
