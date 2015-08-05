@@ -108,12 +108,12 @@ Copyright (c) 2015 Prince John Wesley (princejohnwesley@gmail.com)
         for (token in o) {
           if (result.hasOwnProperty(token)) {
             pattern = new RegExp(startExtract + '\\s*' + escapseRegExp(token) + '\\s*' +
-              endExtract);
+              endExtract, 'g');
             output = output.replace(pattern, o[token]);
           }
         }
         for (token in result) {
-          pattern = new RegExp(startExtract + escapseRegExp(token) + endExtract);
+          pattern = new RegExp(startExtract + escapseRegExp(token) + endExtract, 'g');
           output = output.replace(pattern, properties.initValue);
         }
         return output;
