@@ -93,3 +93,8 @@ var captured = extractor("This is {name}, {age} years old",
 
 ###Web page
 Access from window/global as extractjs.
+
+## License
+This plugin is licensed under the [MIT license](https://github.com/princejwesley/extractjs/blob/master/LICENSE).
+
+Copyright (c) 2015 [Prince John Wesley](http://www.toolitup.com)
