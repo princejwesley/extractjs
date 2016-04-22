@@ -71,7 +71,7 @@ Copyright (c) 2015 Prince John Wesley (princejohnwesley@gmail.com)
         loc = offset + match.length;
 
         if (token === '') return '';
-        pattern += '(.*?)';
+        pattern += '((?:.*?|\r?\n?)*)';
         if (offset + match.length !== str.length) return '';
         pattern += '$';
         return '';
@@ -132,6 +132,7 @@ Copyright (c) 2015 Prince John Wesley (princejohnwesley@gmail.com)
         return output;
       }
 
+      pattern = new RegExp(pattern);
       return matcher(input);
     };
   }

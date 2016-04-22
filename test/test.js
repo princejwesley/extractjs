@@ -15,6 +15,15 @@ describe('extractjs', function() {
       });
     });
 
+    it('should extract multiline input', function() {
+      var captured = extractor("/make '{place}': {description}", "/make 'the lake, further': wow\nnice\n.");
+      expect(captured).to.eql({
+        place: 'the lake, further',
+        description: 'wow\nnice\n.'
+      });
+    });
+
+
     it('should capture multiple variables from input', function() {
       var captured = extractor('This is {name}, I am {age} years old',
         "This is Prince John Wesley, I am 26 years old");
