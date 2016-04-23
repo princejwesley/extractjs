@@ -71,7 +71,7 @@ Copyright (c) 2015 Prince John Wesley (princejohnwesley@gmail.com)
         loc = offset + match.length;
 
         if (token === '') return '';
-        pattern += '((?:.*?|\r?\n?)*)';
+        pattern += '([\\s\\S]*?)';
         if (offset + match.length !== str.length) return '';
         pattern += '$';
         return '';

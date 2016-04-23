@@ -1,6 +1,6 @@
 {
   "name": "extractjs",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "author": "prince john wesley <princejohnwesley@gmail.com>",
   "description": "Extract/interpolate string",
   "license": "MIT",
